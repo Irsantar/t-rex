@@ -6,37 +6,91 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dino Game</title>
     <style>
-    * {padding: 0px;
-        margin:0px;
-    }
-    body{
-        display:flex;
-        align-items:center;
-        justify-content: center;
-        height:100vh;
-
-        user-select: none;
-        touch-action: none;
-        -webkit-touch-callout:none;
-        -webkit-user-select: none;
-        -khtml-user-select:none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-        outline:none;
-        -webkit-tap-highlight-color: rgba(red, green, blue, alpha);
-
-
-    }
-    canvas {
-        border:2px solid grey;
-    }
+        * {
+            padding: 0px;
+            margin: 0px;
+        }
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            user-select: none;
+            touch-action: none;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            outline: none;
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        }
+        canvas {
+            border: 2px solid grey;
+        }
+        #logout-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 10px 15px;
+            background-color: #f44336;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        #logout-btn:hover {
+            background-color: #d32f2f;
+        }
     </style>
+      <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
+      <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-auth.js"></script>
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyATXpQuPH5Qbq2XvWM_959w4qJ13RtwV_0",
+            authDomain: "t-rex-game-8963d.firebaseapp.com",
+            databaseURL: "https://t-rex-game-8963d-default-rtdb.firebaseio.com",
+            projectId: "t-rex-game-8963d",
+            storageBucket: "t-rex-game-8963d.appspot.com",
+            messagingSenderId: "528165359576",
+            appId: "1:528165359576:web:f7e1f1923d6d5401c82cad",
+            measurementId: "G-N0F0FYEQE1"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        // Authentication check
+        firebase.auth().onAuthStateChanged(function(user) {
+            if (!user) {
+                alert("You must be logged in to access this page!");
+                window.location.href = "index.html";
+            }
+        });
+
+        // Logout function
+        function logout() {
+            console.log("Logout button clicked!");
+            firebase.auth().signOut()
+                .then(() => {
+                    console.log("User logged out successfully.");
+                    alert("Logged out successfully!");
+                    window.location.href = "index.html";
+                })
+                .catch((error) => {
+                    console.error("Error during logout:", error.message);
+                    alert("Error logging out: " + error.message);
+                });
+        }
+    </script>
     <script src="index.js" defer type="module"></script>
- 
 </head>
 <body>
     <canvas id="game"></canvas>
-    <div id="full"></div>
+    <button id="logout-btn" onclick="logout()">Logout</button>
 </body>
 </html>
+
+
+
+ 
